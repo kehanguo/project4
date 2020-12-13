@@ -40,8 +40,9 @@ jobs:
         TWITTER_ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }} 
         TWITTER_ACCESS_TOKEN_SECRET: ${{ secrets.ACCESS_TOKEN_SECRET}} 
       run: |
-        export GOOGLE_APPLICATION_CREDENTIALS="$HOME/Users/kehanguo/Desktop/EC601/Projects/Proj_2
-        pytest
+        cd Project\ 4
+        python twitter.py
+        python tweettest.py
         
         
         
