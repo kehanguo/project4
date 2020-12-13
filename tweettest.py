@@ -1,20 +1,25 @@
-import pytest
-import tweetAPIexample as API
-import sentiment_analysis as NLP
-import os
-consumer_key = ""
-consumer_secret = ""
-access_key = ""
-access_secret = ""
+import twitter_analyzer as analyzer
 
-api = API.Authorization_Setup()
-with open('Hashtag_Tweets.json') as f:
-  testdata = json.load(f)
+def test_wrongkey():
 
-#standard unit test of search function of API using return value for successful query
-def standard_test_API():
-    assert API.GET_Hashtag_Search_Tweets(api,"#BU","recent",5,"2020-12-10") == testdata,"Error")
+  # Define the search term
+  search_words = "#BU"
+  # Define the date_since date
+  date_since = "2020-12-10"
+  # Define the date_since date
+  max_number =10
+  
+  # get all tweets into a list
+  # tweets_list = search_tweet(search_words, date_since, max_number)
+  
+  assert len(analyzer,search_tweet(search_words, date_since, max_number)) == 10
+  
+  max_number = 5
+  
+  assert len(analyzer.search_tweet(search_words, date_since, max_number)) == 5
+  
+  # analyze all tweets
+  # analyze(tweets_list)
 
-#Checking if there is information present to analyze
-def sentiment_test_empty():
-    assert os.path.getsize("./Hashtag_tweets.json") != 0, "File w/ Tweets is empty"
+test_wrongkey()
+run
