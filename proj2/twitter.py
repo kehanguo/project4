@@ -39,7 +39,7 @@ if __name__ == "__main__":
     if(num_tweets > 10):
         print("Please consider changing the number of tweets to a value < 10, querying for more has resulted in timeouts with Twitter API")
     else:
-        GET_Hashtag_Search_Tweets(API,"#trump",num_tweets,"2020-9-28")
+        GET_Hashtag_Search_Tweets(API,"#BU",num_tweets,"2020-12-10")
 
 
 
