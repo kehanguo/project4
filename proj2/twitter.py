@@ -1,52 +1,45 @@
-#https://realpython.com/twitter-bot-python-tweepy/
-
-import json
-#import tweepy
 import tweepy
+import sys
+import json #To write file as json format
+import pytest
+
+consumer_key = ""
+consumer_secret = ""
+access_key = ""
+access_secret = ""
 
 
-# Authenticate to Twitter
-auth = tweepy.OAuthHandler("", "")
-auth.set_access_token("", "")
-# Create API object
-api = tweepy.API(auth, wait_on_rate_limit=True,
-    wait_on_rate_limit_notify=True)
+def Authorization_Setup():
+    auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
+    auth.set_access_token(access_key, access_secret)
+    api = tweepy.API(auth)
+    return api
+
+#Write tweets information to file as json format.
+def Write_tweets_to_File(Input_list,target_filename):
+    data = []
+    filename = "%s.json" % target_filename
+    Tweets_text = open(filename, 'w') 
+    for status in Input_list:
+        # json.dump(status._json,Tweets_text,indent = 4)
+        data.append(status._json)
+    json.dump(data,Tweets_text)
+    Tweets_text.close
+
+#Search tweets based on Hashtag and time.
+def GET_Hashtag_Search_Tweets(Local_API,Hashtag,Count_Number,Time_before):
+    Hashtag_Tweets = tweepy.Cursor(Local_API.search,q=Hashtag,count=Count_Number,since=Time_before)
+    Write_tweets_to_File(Hashtag_Tweets.items(),'Hashtag_Tweets')
 
 
-class MyStreamListener(tweepy.StreamListener):
-    def __init__(self, api):
-        self.api = api
-        self.me = api.me()
-
-    def on_status(self, tweet):
-        print(f"{tweet.user.name}:{tweet.text}")
-
-    def on_error(self, status):
-        print("Error detected")
-
-#mark most recent tweet as liked
-def favor():
-    tweets = api.home_timeline(count=1)
-    tweet = tweets[0]
-    print(f"Liking tweet {tweet.id} of {tweet.author.name}")
+if __name__ == "__main__":
+    API = Authorization_Setup()
+    API.wait_on_rate_limit=True
+    num_tweets = input("How many recent tweets would you like to query?") 
+    if(num_tweets > 10):
+        print("Please consider changing the number of tweets to a value < 10, querying for more has resulted in timeouts with Twitter API")
+    else:
+        GET_Hashtag_Search_Tweets(API,"#trump",num_tweets,"2020-9-28")
 
 
-#get most recent 10 filtered tweets from the stream.
-def get_tweets():
-    api.create_favorite(tweet.id)
-    tweets_listener = MyStreamListener(api)
-    stream = tweepy.Stream(api.auth, tweets_listener) 
-    stream.filter(track=["Boston University", "Engineering", "ECE"], languages=["en"])
-
-    for tweet in tweepy.Cursor(api.home_timeline).items(10):
-        print(f"{tweet.user.name} said: {tweet.text}")
-
-#print the tweets blocked
-def block_tweets():
-    for block in api.blocks():
-    print(block.name)
-
-if __name__ == '__main__':
-    favor()
-    get_tweets()
 
